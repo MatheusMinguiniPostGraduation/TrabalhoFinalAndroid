@@ -8,9 +8,4 @@
         app:showAsAction="collapseActionView">
     </item>
 
-    <item android:id="@+id/novaTransaçãoMenuItem"
-        android:title="Nova Transação"
-        app:showAsAction="collapseActionView">
-    </item>
-
 </menu>
