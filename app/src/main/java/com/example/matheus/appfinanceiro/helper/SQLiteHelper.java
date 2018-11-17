@@ -1,8 +1,12 @@
 package com.example.matheus.appfinanceiro.helper;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.matheus.appfinanceiro.util.DBQueries;
+import com.example.matheus.appfinanceiro.view.ListaContaActivity;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
 
@@ -25,13 +29,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-       final String DATABASE_CREATE= "CREATE TABLE conta" +
-                " (" + " id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                " descricao TEXT NOT NULL, " +
-                " saldo DECIMAL (10,2));";
-
-        db.execSQL(DATABASE_CREATE);
+        db.execSQL(DBQueries.CRIAR_TABELA_CONTA);
+        db.execSQL(DBQueries.CRIAR_TABELA_CENTRO_CUSTO);
+        db.execSQL(DBQueries.CRIAR_TABELA_TRANSACAO);
     }
 
     @Override
