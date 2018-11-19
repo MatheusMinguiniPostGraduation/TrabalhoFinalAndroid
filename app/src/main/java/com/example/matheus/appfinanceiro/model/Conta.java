@@ -6,6 +6,14 @@ public class Conta {
     private String descricao;
     private Double saldo;
 
+    public Conta(){
+
+    }
+
+    public Conta(Integer id){
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

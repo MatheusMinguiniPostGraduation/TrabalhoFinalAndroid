@@ -5,8 +5,8 @@ public class Transacao {
     private Conta conta;
     private String descricao;
     private Double valor;
-    private Integer centro_custo;
-    private String natureza_operacao; //Se a transação é débito ou crédito
+    private CentroCusto centro_custo;
+    private Integer natureza_operacao; //Se a transação é débito ou crédito
 
     //Caso tenha periodicidade
     private Integer dias_periodicidade;
@@ -35,19 +35,19 @@ public class Transacao {
         this.valor = valor;
     }
 
-    public Integer getCentro_custo() {
+    public CentroCusto getCentro_custo() {
         return centro_custo;
     }
 
-    public void setCentro_custo(Integer centro_custo) {
+    public void setCentro_custo(CentroCusto centro_custo) {
         this.centro_custo = centro_custo;
     }
 
-    public String getNatureza_operacao() {
+    public Integer getNatureza_operacao() {
         return natureza_operacao;
     }
 
-    public void setNatureza_operacao(String natureza_operacao) {
+    public void setNatureza_operacao(Integer natureza_operacao) {
         this.natureza_operacao = natureza_operacao;
     }
 

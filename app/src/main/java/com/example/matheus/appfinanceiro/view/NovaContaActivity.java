@@ -2,7 +2,6 @@ package com.example.matheus.appfinanceiro.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -57,7 +56,7 @@ public class NovaContaActivity extends AppCompatActivity {
         conta.setSaldo(Double.valueOf(this.saldo.getText().toString()));
 
         ContaDAO contaDAO = new ContaDAO(this);
-        return contaDAO.salvaContato(conta);
+        return contaDAO.salvaConta(conta);
     }
 
     private void pegarElementosTela() {

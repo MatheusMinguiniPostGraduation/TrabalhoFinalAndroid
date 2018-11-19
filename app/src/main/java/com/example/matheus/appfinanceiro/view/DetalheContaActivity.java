@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,29 +51,30 @@ public class DetalheContaActivity extends AppCompatActivity {
     }
 
     public void buscarHistoricoTransacoes(){
-        historicoTransacao = new TransacaoDAO(this).buscarHistoricoTransacoesPorConta();
+        historicoTransacao = new TransacaoDAO(this).buscarHistoricoTransacoesPorConta(contaId);
+        Log.i("info", "AAAA");
 
     }
 
     public void  novaTransacao(View view){
         Intent novaTransacaoIntent = new Intent(this, NovaTransacaoActivity.class);
 
-        novaTransacaoIntent.putExtra("contaId", contaId);
+        novaTransacaoIntent.putExtra(ConstantesUtil.CONTA_ID, contaId);
         startActivityForResult(novaTransacaoIntent, NOVA_TRANSACAO_REQUEST_CODE);
     }
 
-    /*@Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
-            case NOVA_CONTA_REQUEST_CODE:
+            case NOVA_TRANSACAO_REQUEST_CODE:
                 if(resultCode == RESULT_OK) {
 
                     //VER SE ISSO AQUI VAI FICAR ASSIM MESMO
-                    this.listaConta.removeAll(listaConta);
+                    /*this.listaConta.removeAll(listaConta);
                     this.listaConta.addAll(contaDAO.buscarContas());
 
                     saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas()))); //Atualiza o saldo na tela
-                    this.contaAdapter.notifyDataSetChanged();
+                    this.contaAdapter.notifyDataSetChanged();*/
                     Toast.makeText(this, R.string.msg_sucesso, Toast.LENGTH_LONG).show();
                 }
 
@@ -83,7 +85,7 @@ public class DetalheContaActivity extends AppCompatActivity {
                 if(resultCode == ConstantesUtil.RESULT_ERROR){
                     Toast.makeText(this, R.string.msg_cancelamento, Toast.LENGTH_LONG).show();
                 }
-                break;
+             break;
         }
-    }*/
+    }
 }

@@ -7,7 +7,7 @@
     tools:context=".view.DetalheContaActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/descricao_transacao_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -23,15 +23,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/valor_transacao_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Valor em R$"
         android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintStart_toStartOf="@+id/descricao_transacao_view"
+        app:layout_constraintTop_toBottomOf="@+id/descricao_transacao_view" />
 
     <TextView
         android:id="@+id/textView5"
@@ -41,31 +41,31 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:text="Natureza da operação:"
-        app:layout_constraintStart_toStartOf="@+id/editText2"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintStart_toStartOf="@+id/valor_transacao_view"
+        app:layout_constraintTop_toBottomOf="@+id/valor_transacao_view" />
 
 
     <RadioButton
-        android:id="@+id/radioButton3"
+        android:id="@+id/debito_botao_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Débito"
-        app:layout_constraintEnd_toStartOf="@+id/radioButton4"
+        app:layout_constraintEnd_toStartOf="@+id/credito_botao_view"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <RadioButton
-        android:id="@+id/radioButton4"
+        android:id="@+id/credito_botao_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Crédito"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/radioButton3"
-        app:layout_constraintTop_toTopOf="@+id/radioButton3" />
+        app:layout_constraintStart_toEndOf="@+id/debito_botao_view"
+        app:layout_constraintTop_toTopOf="@+id/debito_botao_view" />
 
     <Button
         android:id="@+id/button"
@@ -117,6 +117,6 @@
         android:text="Centro de custo (Alimentação, combustível, escola etc...)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioButton3" />
+        app:layout_constraintTop_toBottomOf="@+id/debito_botao_view" />
 
 </android.support.constraint.ConstraintLayout>

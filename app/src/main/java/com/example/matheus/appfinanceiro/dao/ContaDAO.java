@@ -21,7 +21,7 @@ public class ContaDAO {
         this.dbHelper = SQLiteHelper.getInstance(context);
     }
 
-    public Boolean salvaContato(Conta conta) {
+    public Boolean salvaConta(Conta conta) {
         try{
             database = dbHelper.getWritableDatabase();
 
