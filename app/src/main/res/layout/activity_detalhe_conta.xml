@@ -71,6 +71,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cadastrar_transacao" />
 
     <ListView
+        android:id="@+id/historico_transacao_list_view"
         android:layout_width="384dp"
         android:layout_height="274dp"
         android:layout_marginTop="8dp"

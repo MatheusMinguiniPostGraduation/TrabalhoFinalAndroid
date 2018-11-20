@@ -6,9 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.matheus.appfinanceiro.VO.TransacaoVO;
 import com.example.matheus.appfinanceiro.helper.SQLiteHelper;
 import com.example.matheus.appfinanceiro.model.Conta;
 import com.example.matheus.appfinanceiro.model.Transacao;
+import com.example.matheus.appfinanceiro.util.ConstantesUtil;
 import com.example.matheus.appfinanceiro.util.DBQueries;
 
 import java.util.ArrayList;
@@ -46,25 +48,26 @@ public class TransacaoDAO {
         return Boolean.TRUE;
     }
 
-    public List<Transacao> buscarHistoricoTransacoesPorConta(Integer contaId){
+    public List<TransacaoVO> buscarHistoricoTransacoesPorConta(Integer contaId){
         database = dbHelper.getReadableDatabase();
 
-        List<Transacao> transacoesDB = new ArrayList<>();
+        List<TransacaoVO> transacoesDB = new ArrayList<>();
 
-        String[] cols = new String[]{"descricao", "valor", };
+        String[] cols = new String[]{"t.descricao", "t.valor", "t.natureza_operacao", "c.descricao"};
 
         Cursor cursor = database.rawQuery(DBQueries.BUSCAR_HISTORICO_TRANSACAO_POR_CONTA_QUERY + contaId, null);
 
 
         while (cursor.moveToNext()) {
-            Transacao transacao = new Transacao();
+            TransacaoVO transacao = new TransacaoVO();
             transacao.setDescricao(cursor.getString(0));
-            transacao.setValor(Double.valueOf(cursor.getString(1)));
+            transacao.setValor(cursor.getString(1));
 
-           /* String natureza_operacao = (String.valueOf(cursor.getInt(2)) == "1" ? "Débito" : "Crédito");
-            transacao.setNatureza_operacao(natureza_operacao);
+            String natureza_operacao = (String.valueOf(cursor.getInt(2))
+                    .equalsIgnoreCase(String.valueOf(ConstantesUtil.DEBITO)) ? "Débito" : "Crédito");
+            transacao.setNaturezaOperacao(natureza_operacao);
 
-            transacao.setValor(Double.valueOf(cursor.getString(1)));*/
+            transacao.setCentroCusto(cursor.getString(3));
 
             transacoesDB.add(transacao);
         }

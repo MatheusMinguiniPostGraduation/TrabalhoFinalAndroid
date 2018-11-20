@@ -2,19 +2,19 @@ package com.example.matheus.appfinanceiro.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.matheus.appfinanceiro.R;
+import com.example.matheus.appfinanceiro.VO.TransacaoVO;
+import com.example.matheus.appfinanceiro.adapter.TransacaoAdapter;
 import com.example.matheus.appfinanceiro.dao.ContaDAO;
 import com.example.matheus.appfinanceiro.dao.TransacaoDAO;
 import com.example.matheus.appfinanceiro.model.Conta;
-import com.example.matheus.appfinanceiro.model.Transacao;
 import com.example.matheus.appfinanceiro.util.ConstantesUtil;
 
 import java.util.List;
@@ -24,10 +24,13 @@ public class DetalheContaActivity extends AppCompatActivity {
     private static final int NOVA_TRANSACAO_REQUEST_CODE = 0;
     TextView descricaoView;
     TextView saldoView;
+    ListView historicoTransacoesListview;
 
     Integer contaId;
 
-    List<Transacao> historicoTransacao;
+    List<TransacaoVO> historicoTransacao;
+
+    TransacaoAdapter historicoTransacaoAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,12 +49,18 @@ public class DetalheContaActivity extends AppCompatActivity {
 
         buscarHistoricoTransacoes();
 
+        historicoTransacaoAdapter = new TransacaoAdapter(this, historicoTransacao);
+        historicoTransacoesListview = findViewById(R.id.historico_transacao_list_view);
+        historicoTransacoesListview.setAdapter(historicoTransacaoAdapter);
+
+
         getSupportActionBar().setSubtitle("Detalhes da conta bancária");
 
     }
 
     public void buscarHistoricoTransacoes(){
         historicoTransacao = new TransacaoDAO(this).buscarHistoricoTransacoesPorConta(contaId);
+
         Log.i("info", "AAAA");
 
     }
@@ -70,11 +79,11 @@ public class DetalheContaActivity extends AppCompatActivity {
                 if(resultCode == RESULT_OK) {
 
                     //VER SE ISSO AQUI VAI FICAR ASSIM MESMO
-                    /*this.listaConta.removeAll(listaConta);
-                    this.listaConta.addAll(contaDAO.buscarContas());
+                    this.historicoTransacao.removeAll(historicoTransacao);
+                    this.historicoTransacao.addAll(new TransacaoDAO(this).buscarHistoricoTransacoesPorConta(contaId));
 
-                    saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas()))); //Atualiza o saldo na tela
-                    this.contaAdapter.notifyDataSetChanged();*/
+                    //saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas()))); //Atualiza o saldo na tela
+                    this.historicoTransacaoAdapter.notifyDataSetChanged();
                     Toast.makeText(this, R.string.msg_sucesso, Toast.LENGTH_LONG).show();
                 }
 
