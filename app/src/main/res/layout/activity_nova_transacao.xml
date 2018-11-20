@@ -7,7 +7,7 @@
     tools:context=".view.DetalheContaActivity">
 
     <EditText
-        android:id="@+id/descricao_transacao_view"
+        android:id="@+id/natureza_transacao_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,8 +30,8 @@
         android:ems="10"
         android:hint="Valor em R$"
         android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="@+id/descricao_transacao_view"
-        app:layout_constraintTop_toBottomOf="@+id/descricao_transacao_view" />
+        app:layout_constraintStart_toStartOf="@+id/natureza_transacao_view"
+        app:layout_constraintTop_toBottomOf="@+id/natureza_transacao_view" />
 
     <TextView
         android:id="@+id/textView5"
@@ -72,8 +72,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
+        android:background="@android:color/holo_orange_dark"
         android:onClick="salvarTransacao"
         android:text="Salvar"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/button2"

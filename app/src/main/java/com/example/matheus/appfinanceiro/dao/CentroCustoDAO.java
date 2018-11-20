@@ -69,6 +69,10 @@ public class CentroCustoDAO {
         descricaoCentroCusto.add("Educação");
         descricaoCentroCusto.add("Alimentação");
         descricaoCentroCusto.add("Transporte");
+        descricaoCentroCusto.add("Saúde");
+        descricaoCentroCusto.add("Tarifas bancárias");
+        descricaoCentroCusto.add("Corporativo");
+        descricaoCentroCusto.add("Moradia");
 
 
         for(int i = 0; i < 5; i++){

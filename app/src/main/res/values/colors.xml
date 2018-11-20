@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#d3e45300</color>
+    <color name="colorPrimaryDark">#0a372e</color>
     <color name="colorAccent">#1ba2d8</color>
+    <color name="entrada_color">#008577</color>
+    <color name="saida_color">#b22222</color>
 </resources>

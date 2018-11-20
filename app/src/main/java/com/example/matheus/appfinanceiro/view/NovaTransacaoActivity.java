@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -75,7 +74,7 @@ public class NovaTransacaoActivity extends AppCompatActivity {
     }
 
     private void pegarElementosTela(){
-        descricaoView = findViewById(R.id.descricao_transacao_view);
+        descricaoView = findViewById(R.id.natureza_transacao_view);
         valorView = findViewById(R.id.valor_transacao_view);
         debitoView = findViewById(R.id.debito_botao_view);
         creditoView = findViewById(R.id.credito_botao_view);

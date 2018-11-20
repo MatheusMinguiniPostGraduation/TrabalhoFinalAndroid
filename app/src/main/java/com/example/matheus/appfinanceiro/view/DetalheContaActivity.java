@@ -3,7 +3,6 @@ package com.example.matheus.appfinanceiro.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,7 +15,10 @@ import com.example.matheus.appfinanceiro.dao.ContaDAO;
 import com.example.matheus.appfinanceiro.dao.TransacaoDAO;
 import com.example.matheus.appfinanceiro.model.Conta;
 import com.example.matheus.appfinanceiro.util.ConstantesUtil;
+import com.example.matheus.appfinanceiro.util.TransacaoUtil;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class DetalheContaActivity extends AppCompatActivity {
@@ -32,6 +34,8 @@ public class DetalheContaActivity extends AppCompatActivity {
 
     TransacaoAdapter historicoTransacaoAdapter;
 
+    private ContaDAO contaDAO;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,29 +45,25 @@ public class DetalheContaActivity extends AppCompatActivity {
 
         Conta contaDetalhe = new ContaDAO(this).buscarContaPorId(contaId);
 
-        saldoView = findViewById(R.id.saldo_conta_detalhe);
-        descricaoView = findViewById(R.id.descricao_conta_detalhe);
+        contaDAO = new ContaDAO(this);
 
-        saldoView.setText("R$ " + contaDetalhe.getSaldo());
-        descricaoView.setText(contaDetalhe.getDescricao());
-
-        buscarHistoricoTransacoes();
+        historicoTransacao = TransacaoUtil.buscarHistoricoTransacoes(this, contaId);
 
         historicoTransacaoAdapter = new TransacaoAdapter(this, historicoTransacao);
         historicoTransacoesListview = findViewById(R.id.historico_transacao_list_view);
         historicoTransacoesListview.setAdapter(historicoTransacaoAdapter);
 
 
+        saldoView = findViewById(R.id.saldo_conta_detalhe);
+        descricaoView = findViewById(R.id.descricao_conta_detalhe);
+
+        saldoView.setText("R$ " + contaDAO.buscarSaldoContaPorId(contaId));
+        descricaoView.setText(contaDetalhe.getDescricao());
+
         getSupportActionBar().setSubtitle("Detalhes da conta bancária");
-
     }
 
-    public void buscarHistoricoTransacoes(){
-        historicoTransacao = new TransacaoDAO(this).buscarHistoricoTransacoesPorConta(contaId);
 
-        Log.i("info", "AAAA");
-
-    }
 
     public void  novaTransacao(View view){
         Intent novaTransacaoIntent = new Intent(this, NovaTransacaoActivity.class);
@@ -82,7 +82,7 @@ public class DetalheContaActivity extends AppCompatActivity {
                     this.historicoTransacao.removeAll(historicoTransacao);
                     this.historicoTransacao.addAll(new TransacaoDAO(this).buscarHistoricoTransacoesPorConta(contaId));
 
-                    //saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas()))); //Atualiza o saldo na tela
+                    saldoView.setText("R$ " + contaDAO.buscarSaldoContaPorId(contaId)); //Atualiza o saldo na tela
                     this.historicoTransacaoAdapter.notifyDataSetChanged();
                     Toast.makeText(this, R.string.msg_sucesso, Toast.LENGTH_LONG).show();
                 }
@@ -94,7 +94,7 @@ public class DetalheContaActivity extends AppCompatActivity {
                 if(resultCode == ConstantesUtil.RESULT_ERROR){
                     Toast.makeText(this, R.string.msg_cancelamento, Toast.LENGTH_LONG).show();
                 }
-             break;
+                break;
         }
     }
 }

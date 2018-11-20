@@ -60,6 +60,21 @@ public class ContaDAO {
         return saldo;
     }
 
+    public Double buscarSaldoContaPorId(Integer id){
+        Double saldo = new Double(0);
+        database = dbHelper.getReadableDatabase();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT SUM(saldo) as total FROM conta WHERE id = " + id);
+        Cursor cursor = database.rawQuery(sql.toString(), null);
+
+        cursor.moveToFirst(); // Precisa ir para o primeiro item do retorno da query, sem esse método, ocorre Exception;
+
+        saldo = cursor.getDouble(0);
+
+        return saldo;
+    }
+
     public Conta buscarContaPorId(Integer id){
 
         database = dbHelper.getReadableDatabase();

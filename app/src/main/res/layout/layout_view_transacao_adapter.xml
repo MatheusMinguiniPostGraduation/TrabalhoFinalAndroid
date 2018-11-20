@@ -7,24 +7,28 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/descricao_transacao_view"
+        android:id="@+id/natureza_transacao_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/natureza_transacao_view"
+        android:id="@+id/descricao_transacao_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/descricao_transacao_view"
-        app:layout_constraintTop_toBottomOf="@+id/descricao_transacao_view" />
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/natureza_transacao_view"
+        app:layout_constraintTop_toBottomOf="@+id/natureza_transacao_view" />
 
     <TextView
         android:id="@+id/valor_transacao_view"
@@ -32,16 +36,25 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/natureza_transacao_view"
+        android:textAllCaps="true"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toEndOf="@+id/centro_custo_transacao_view"
         app:layout_constraintTop_toTopOf="@+id/natureza_transacao_view" />
 
     <TextView
         android:id="@+id/centro_custo_transacao_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/natureza_transacao_view"
-        app:layout_constraintTop_toBottomOf="@+id/natureza_transacao_view" />
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/natureza_transacao_view"
+        app:layout_constraintStart_toEndOf="@+id/natureza_transacao_view" />
 </android.support.constraint.ConstraintLayout>

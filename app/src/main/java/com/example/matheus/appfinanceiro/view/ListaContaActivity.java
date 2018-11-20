@@ -55,6 +55,17 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
         listaContaView.setAdapter(contaAdapter);
     }
 
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        listaConta = contaDAO.buscarContas();
+        saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas())));
+        contaAdapter = new ContaAdapter(this, listaConta);
+        listaContaView.setAdapter(contaAdapter);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

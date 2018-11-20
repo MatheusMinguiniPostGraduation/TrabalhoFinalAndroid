@@ -8,4 +8,9 @@ public class ConstantesUtil {
 
     public static final int DEBITO = 1;
     public static final int CREDITO = 0;
+
+
+    public static final String SAIDA_TRANSACAO = "Saída";
+    public static final String ENTRADA_TRANSACAO = "Entrada";
+
 }

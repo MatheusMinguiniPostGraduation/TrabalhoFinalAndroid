@@ -39,6 +39,19 @@ public class TransacaoDAO {
 
             database.insert("transacao", null, values);
 
+            Double saldo = buscarSaldoContaPorId(transacao.getConta().getId());
+
+            if(transacao.getNatureza_operacao() == ConstantesUtil.DEBITO){
+                saldo = saldo - transacao.getValor();
+            }else{
+                saldo = saldo + transacao.getValor();
+            }
+
+            //Atualizar saldo da conta
+            ContentValues valor = new ContentValues();
+            valor.put("saldo", saldo);
+            database.update("conta", valor, "id="+transacao.getConta().getId(), null);
+
             database.close();
         }catch(Exception e){
             Log.i("info", e.getMessage());
@@ -46,6 +59,21 @@ public class TransacaoDAO {
         }
 
         return Boolean.TRUE;
+    }
+
+    public Double buscarSaldoContaPorId(Integer id){
+        Double saldo = new Double(0);
+        database = dbHelper.getReadableDatabase();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT SUM(saldo) as total FROM conta WHERE id = " + id);
+        Cursor cursor = database.rawQuery(sql.toString(), null);
+
+        cursor.moveToFirst(); // Precisa ir para o primeiro item do retorno da query, sem esse método, ocorre Exception;
+
+        saldo = cursor.getDouble(0);
+
+        return saldo;
     }
 
     public List<TransacaoVO> buscarHistoricoTransacoesPorConta(Integer contaId){
@@ -64,7 +92,7 @@ public class TransacaoDAO {
             transacao.setValor(cursor.getString(1));
 
             String natureza_operacao = (String.valueOf(cursor.getInt(2))
-                    .equalsIgnoreCase(String.valueOf(ConstantesUtil.DEBITO)) ? "Débito" : "Crédito");
+                    .equalsIgnoreCase(String.valueOf(ConstantesUtil.DEBITO)) ? ConstantesUtil.SAIDA_TRANSACAO : ConstantesUtil.ENTRADA_TRANSACAO);
             transacao.setNaturezaOperacao(natureza_operacao);
 
             transacao.setCentroCusto(cursor.getString(3));
