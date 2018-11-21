@@ -15,10 +15,7 @@ import com.example.matheus.appfinanceiro.dao.ContaDAO;
 import com.example.matheus.appfinanceiro.dao.TransacaoDAO;
 import com.example.matheus.appfinanceiro.model.Conta;
 import com.example.matheus.appfinanceiro.util.ConstantesUtil;
-import com.example.matheus.appfinanceiro.util.TransacaoUtil;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class DetalheContaActivity extends AppCompatActivity {
@@ -47,7 +44,7 @@ public class DetalheContaActivity extends AppCompatActivity {
 
         contaDAO = new ContaDAO(this);
 
-        historicoTransacao = TransacaoUtil.buscarHistoricoTransacoes(this, contaId);
+        historicoTransacao = new TransacaoDAO(this).buscarHistoricoTransacoesPorConta(contaId);
 
         historicoTransacaoAdapter = new TransacaoAdapter(this, historicoTransacao);
         historicoTransacoesListview = findViewById(R.id.historico_transacao_list_view);

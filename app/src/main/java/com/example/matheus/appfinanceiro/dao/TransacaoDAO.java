@@ -76,6 +76,36 @@ public class TransacaoDAO {
         return saldo;
     }
 
+    public Double buscarValorTransacoesDebito(){
+        Double saldo = new Double(0);
+        database = dbHelper.getReadableDatabase();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT SUM(valor) as total FROM transacao WHERE debito = " + ConstantesUtil.DEBITO);
+        Cursor cursor = database.rawQuery(sql.toString(), null);
+
+        cursor.moveToFirst();
+
+        saldo = cursor.getDouble(0);
+
+        return saldo;
+    }
+
+    public Double buscarValorTransacoesCredito(){
+        Double saldo = new Double(0);
+        database = dbHelper.getReadableDatabase();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT SUM(valor) as total FROM transacao WHERE debito = " + ConstantesUtil.CREDITO);
+        Cursor cursor = database.rawQuery(sql.toString(), null);
+
+        cursor.moveToFirst();
+
+        saldo = cursor.getDouble(0);
+
+        return saldo;
+    }
+
     public List<TransacaoVO> buscarHistoricoTransacoesPorConta(Integer contaId){
         database = dbHelper.getReadableDatabase();
 

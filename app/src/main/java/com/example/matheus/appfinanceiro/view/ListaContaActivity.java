@@ -1,7 +1,6 @@
 package com.example.matheus.appfinanceiro.view;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 import com.example.matheus.appfinanceiro.R;
 import com.example.matheus.appfinanceiro.adapter.ContaAdapter;
 import com.example.matheus.appfinanceiro.dao.ContaDAO;
+import com.example.matheus.appfinanceiro.dao.TransacaoDAO;
 import com.example.matheus.appfinanceiro.model.Conta;
 import com.example.matheus.appfinanceiro.util.ConstantesUtil;
 
@@ -27,12 +27,15 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
 
     private ListView listaContaView;
     private TextView saldoContasView;
+    private TextView entradaTextView;
+    private TextView saidaTextView;
 
     private List<Conta> listaConta;
 
     ContaAdapter contaAdapter;
 
     ContaDAO contaDAO;
+    TransacaoDAO transacaoDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
         setContentView(R.layout.activity_lista_conta);
 
         contaDAO = new ContaDAO(this);
+        transacaoDAO = new TransacaoDAO(this);
 
         listaConta = contaDAO.buscarContas();
 
@@ -52,6 +56,13 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
         saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas())));
         contaAdapter = new ContaAdapter(this, listaConta);
 
+        //Buscar total de entrada e saída
+        entradaTextView = findViewById(R.id.entradaTextView);
+        saidaTextView = findViewById(R.id.saidaTextView);
+        entradaTextView.setText(String.valueOf(transacaoDAO.buscarValorTransacoesCredito()));
+        saidaTextView.setText(String.valueOf(transacaoDAO.buscarValorTransacoesDebito()));
+
+
         listaContaView.setAdapter(contaAdapter);
     }
 
@@ -60,10 +71,16 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
     @Override
     protected void onRestart() {
         super.onRestart();
+
+        //Atualiza os saldos nas contas
         listaConta = contaDAO.buscarContas();
         saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas())));
         contaAdapter = new ContaAdapter(this, listaConta);
         listaContaView.setAdapter(contaAdapter);
+
+        //atualiza o valor das transacoes
+        entradaTextView.setText(String.valueOf(transacaoDAO.buscarValorTransacoesCredito()));
+        saidaTextView.setText(String.valueOf(transacaoDAO.buscarValorTransacoesDebito()));
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.matheus.appfinanceiro.R;
@@ -23,6 +24,7 @@ public class TransacaoAdapter extends ArrayAdapter<TransacaoVO> {
     private TextView valorTransacaoTextView;
     private TextView naturezaOperacaoTransacaoTextView;
     private TextView centroCustoTransacaoTextView;
+    private ImageView thumbImageView;
 
     //Objeto responsável por transformar um xml em uma instância de um objeto
     private LayoutInflater layoutInflater;
@@ -46,25 +48,35 @@ public class TransacaoAdapter extends ArrayAdapter<TransacaoVO> {
         this.valorTransacaoTextView =  convertView.findViewById(R.id.valor_transacao_view);
         this.naturezaOperacaoTransacaoTextView =  convertView.findViewById(R.id.natureza_transacao_view);
         this.centroCustoTransacaoTextView =  convertView.findViewById(R.id.centro_custo_transacao_view);
+        this.thumbImageView = convertView.findViewById(R.id.thumb_image_view);
 
 
         pintarTela(getItem(position));
 
         TransacaoVO transacao = getItem(position);
         descricaoTransacaoTextView.setText(transacao.getDescricao());
-        valorTransacaoTextView.setText("R$ ".concat(String.valueOf(transacao.getValor())));
+        valorTransacaoTextView.setText(setarSimbolo(transacao));
         naturezaOperacaoTransacaoTextView.setText(transacao.getNaturezaOperacao());
         centroCustoTransacaoTextView.setText("(".concat(transacao.getCentroCusto()).concat(")"));
 
         return convertView;
     }
 
+    private String setarSimbolo(TransacaoVO transacao){
+        if(transacao.getNaturezaOperacao().equals("Entrada")){
+            return "+ R$ ".concat(String.valueOf(transacao.getValor()));
+        }else{
+            return "- R$ ".concat(String.valueOf(transacao.getValor()));
+        }
+    }
     private void pintarTela(TransacaoVO transacaoVO){
         Integer cor;
         if(transacaoVO.getNaturezaOperacao().equals("Entrada")){
             cor = Color.parseColor("#FF008577");
+            thumbImageView.setImageResource(R.drawable.thumb_up);
         }else{
             cor = Color.parseColor("#B22222");
+            thumbImageView.setImageResource(R.drawable.thumb_down);
         }
 
         descricaoTransacaoTextView.setTextColor(cor);

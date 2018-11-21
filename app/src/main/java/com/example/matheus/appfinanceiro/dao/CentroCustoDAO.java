@@ -75,7 +75,7 @@ public class CentroCustoDAO {
         descricaoCentroCusto.add("Moradia");
 
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < descricaoCentroCusto.size(); i++){
             ContentValues values = new ContentValues();
             values.put("descricao", descricaoCentroCusto.get(i));
             listaContentValues.add(values);
