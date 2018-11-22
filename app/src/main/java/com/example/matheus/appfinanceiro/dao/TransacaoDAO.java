@@ -13,6 +13,7 @@ import com.example.matheus.appfinanceiro.model.Transacao;
 import com.example.matheus.appfinanceiro.util.ConstantesUtil;
 import com.example.matheus.appfinanceiro.util.DBQueries;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +105,24 @@ public class TransacaoDAO {
         saldo = cursor.getDouble(0);
 
         return saldo;
+    }
+
+    public List<TransacaoVO> buscarTransacoesDebito(){
+        List<TransacaoVO> transacoesDebito = new ArrayList<TransacaoVO>();
+        database = dbHelper.getReadableDatabase();
+
+        Cursor cursor = database.rawQuery(DBQueries.BUSCAR_TRANSACOES_DEBITO_AGRUPADAS_POR_TIPO_CUSTO, new String[] {String.valueOf(ConstantesUtil.DEBITO)});
+
+        while (cursor.moveToNext()) {
+            TransacaoVO transacao = new TransacaoVO();
+            transacao.setValor(String.valueOf(cursor.getDouble(0)));
+            transacao.setCentroCusto(cursor.getString(1));
+
+            transacoesDebito.add(transacao);
+        }
+
+
+        return transacoesDebito;
     }
 
     public List<TransacaoVO> buscarHistoricoTransacoesPorConta(Integer contaId){

@@ -69,8 +69,7 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
 
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onRestart() { super.onRestart();
 
         //Atualiza os saldos nas contas
         listaConta = contaDAO.buscarContas();
@@ -95,9 +94,17 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
 
-        intent = new Intent(getApplicationContext(), NovaContaActivity.class);
+        if(item.getItemId() == R.id.novaContaMenuItem){
+            intent = new Intent(getApplicationContext(), NovaContaActivity.class);
+            startActivityForResult(intent, NOVA_CONTA_REQUEST_CODE);
+        }
 
-        startActivityForResult(intent, NOVA_CONTA_REQUEST_CODE);
+        if(item.getItemId() == R.id.graficoGastos){
+            intent = new Intent(getApplicationContext(), PieChartActivity.class);
+            startActivity(intent);
+        }
+
+
 
         return super.onOptionsItemSelected(item);
     }

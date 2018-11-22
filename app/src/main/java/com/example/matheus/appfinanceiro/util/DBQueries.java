@@ -1,6 +1,10 @@
 package com.example.matheus.appfinanceiro.util;
 
-public class DBQueries {
+public final class DBQueries {
+
+    private DBQueries(){
+
+    }
 
     public static final String CRIAR_TABELA_CONTA = "CREATE TABLE IF NOT EXISTS conta( " +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -26,4 +30,8 @@ public class DBQueries {
 
     public static final String BUSCAR_HISTORICO_TRANSACAO_POR_CONTA_QUERY = "SELECT t.descricao, t.valor, t.debito, c.descricao FROM transacao t " +
             "INNER JOIN centro_custo c ON c.id = t.centro_custo WHERE t.conta = ";
+
+    public static final String  BUSCAR_TRANSACOES_DEBITO_AGRUPADAS_POR_TIPO_CUSTO = "SELECT SUM(t.valor) as total, c.descricao, c.id " +
+            "FROM transacao t INNER JOIN centro_custo c ON t.centro_custo = c.id WHERE " +
+            "t.debito =? GROUP BY c.id";
 }
