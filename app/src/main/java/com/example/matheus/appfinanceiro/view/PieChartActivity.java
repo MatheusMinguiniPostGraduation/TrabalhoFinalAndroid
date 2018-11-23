@@ -44,7 +44,7 @@ public class PieChartActivity  extends AppCompatActivity {
         pieChart.animateY(2000, Easing.EasingOption.EaseInOutCubic);
 
         Description description = new Description();
-        description.setText("Gráfico sobre o centro de gastos entre as transações bancárias");
+        description.setText("Centro de gastos entre as transações bancárias");
         description.setTextSize(13f);
         pieChart.setDescription(description);
 

@@ -18,6 +18,7 @@ import com.example.matheus.appfinanceiro.dao.ContaDAO;
 import com.example.matheus.appfinanceiro.dao.TransacaoDAO;
 import com.example.matheus.appfinanceiro.model.Conta;
 import com.example.matheus.appfinanceiro.util.ConstantesUtil;
+import com.example.matheus.appfinanceiro.util.FormatNumberUtil;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
 
         saldoContasView = findViewById(R.id.totalSaldoContasView);
 
-        saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas())));
+        saldoContasView.setText("R$".concat(FormatNumberUtil.formatDecimal(contaDAO.buscarSaldoContas())));
         contaAdapter = new ContaAdapter(this, listaConta);
 
         //Buscar total de entrada e saída
@@ -73,7 +74,7 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
 
         //Atualiza os saldos nas contas
         listaConta = contaDAO.buscarContas();
-        saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas())));
+        saldoContasView.setText("R$ ".concat(FormatNumberUtil.formatDecimal(contaDAO.buscarSaldoContas())));
         contaAdapter = new ContaAdapter(this, listaConta);
         listaContaView.setAdapter(contaAdapter);
 

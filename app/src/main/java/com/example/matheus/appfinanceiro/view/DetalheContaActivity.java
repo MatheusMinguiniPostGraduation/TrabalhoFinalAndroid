@@ -15,6 +15,7 @@ import com.example.matheus.appfinanceiro.dao.ContaDAO;
 import com.example.matheus.appfinanceiro.dao.TransacaoDAO;
 import com.example.matheus.appfinanceiro.model.Conta;
 import com.example.matheus.appfinanceiro.util.ConstantesUtil;
+import com.example.matheus.appfinanceiro.util.FormatNumberUtil;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class DetalheContaActivity extends AppCompatActivity {
         saldoView = findViewById(R.id.saldo_conta_detalhe);
         descricaoView = findViewById(R.id.descricao_conta_detalhe);
 
-        saldoView.setText("R$ " + contaDAO.buscarSaldoContaPorId(contaId));
+        saldoView.setText("R$".concat(FormatNumberUtil.formatDecimal(contaDAO.buscarSaldoContaPorId(contaId))));
         descricaoView.setText(contaDetalhe.getDescricao());
 
         getSupportActionBar().setSubtitle("Detalhes da conta bancária");
