@@ -36,7 +36,7 @@ public class PieChartActivity  extends AppCompatActivity {
         pieChart = (PieChart) findViewById(R.id.pieChart);
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5,10,5,5);
+        pieChart.setExtraOffsets(8,16,8,8);
 
         pieChart.setDragDecelerationFrictionCoef(0.95f);
         pieChart.setHoleColor(Color.WHITE);
@@ -45,7 +45,7 @@ public class PieChartActivity  extends AppCompatActivity {
 
         Description description = new Description();
         description.setText("Gráfico sobre o centro de gastos entre as transações bancárias");
-        description.setTextSize(10f);
+        description.setTextSize(13f);
         pieChart.setDescription(description);
 
 
@@ -56,7 +56,7 @@ public class PieChartActivity  extends AppCompatActivity {
         dataSet.setColors(ColorTemplate.PASTEL_COLORS);
 
         PieData data = new PieData(dataSet);
-        data.setValueTextSize(10f);
+        data.setValueTextSize(15f);
         data.setValueTextColor(Color.YELLOW);
 
         pieChart.setData(data);

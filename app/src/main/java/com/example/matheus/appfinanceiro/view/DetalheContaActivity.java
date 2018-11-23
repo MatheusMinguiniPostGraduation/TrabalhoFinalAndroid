@@ -75,7 +75,6 @@ public class DetalheContaActivity extends AppCompatActivity {
             case NOVA_TRANSACAO_REQUEST_CODE:
                 if(resultCode == RESULT_OK) {
 
-                    //VER SE ISSO AQUI VAI FICAR ASSIM MESMO
                     this.historicoTransacao.removeAll(historicoTransacao);
                     this.historicoTransacao.addAll(new TransacaoDAO(this).buscarHistoricoTransacoesPorConta(contaId));
 
@@ -89,7 +88,7 @@ public class DetalheContaActivity extends AppCompatActivity {
                 }
 
                 if(resultCode == ConstantesUtil.RESULT_ERROR){
-                    Toast.makeText(this, R.string.msg_cancelamento, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.msg_erro, Toast.LENGTH_LONG).show();
                 }
                 break;
         }

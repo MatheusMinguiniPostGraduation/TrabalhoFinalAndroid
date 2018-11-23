@@ -8,12 +8,10 @@ import android.util.Log;
 
 import com.example.matheus.appfinanceiro.VO.TransacaoVO;
 import com.example.matheus.appfinanceiro.helper.SQLiteHelper;
-import com.example.matheus.appfinanceiro.model.Conta;
 import com.example.matheus.appfinanceiro.model.Transacao;
 import com.example.matheus.appfinanceiro.util.ConstantesUtil;
 import com.example.matheus.appfinanceiro.util.DBQueries;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,92 +24,31 @@ public class TransacaoDAO {
         this.dbHelper = SQLiteHelper.getInstance(context);
     }
 
-    public Boolean salvarTransacao(Transacao transacao) {
-        try{
-            database = dbHelper.getWritableDatabase();
-
-            ContentValues values = new ContentValues();
-
-            values.put("descricao", transacao.getDescricao());
-            values.put("valor", transacao.getValor());
-            values.put("conta", transacao.getConta().getId());
-            values.put("centro_custo", transacao.getCentro_custo().getId());
-            values.put("debito", transacao.getNatureza_operacao());
-
-            database.insert("transacao", null, values);
-
-            Double saldo = buscarSaldoContaPorId(transacao.getConta().getId());
-
-            if(transacao.getNatureza_operacao() == ConstantesUtil.DEBITO){
-                saldo = saldo - transacao.getValor();
-            }else{
-                saldo = saldo + transacao.getValor();
-            }
-
-            //Atualizar saldo da conta
-            ContentValues valor = new ContentValues();
-            valor.put("saldo", saldo);
-            database.update("conta", valor, "id="+transacao.getConta().getId(), null);
-
-            database.close();
-        }catch(Exception e){
-            Log.i("info", e.getMessage());
-            return Boolean.FALSE;
-        }
-
-        return Boolean.TRUE;
-    }
-
-    public Double buscarSaldoContaPorId(Integer id){
-        Double saldo = new Double(0);
-        database = dbHelper.getReadableDatabase();
-
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT SUM(saldo) as total FROM conta WHERE id = " + id);
-        Cursor cursor = database.rawQuery(sql.toString(), null);
-
-        cursor.moveToFirst(); // Precisa ir para o primeiro item do retorno da query, sem esse método, ocorre Exception;
-
-        saldo = cursor.getDouble(0);
-
-        return saldo;
-    }
-
     public Double buscarValorTransacoesDebito(){
-        Double saldo = new Double(0);
         database = dbHelper.getReadableDatabase();
 
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT SUM(valor) as total FROM transacao WHERE debito = " + ConstantesUtil.DEBITO);
-        Cursor cursor = database.rawQuery(sql.toString(), null);
+        Cursor cursor = database.rawQuery(DBQueries.BUSCAR_VALOR_TRANSACOES_DEBITO_QUERY, new String[] {String.valueOf(ConstantesUtil.DEBITO)});
 
         cursor.moveToFirst();
 
-        saldo = cursor.getDouble(0);
-
-        return saldo;
+        return cursor.getDouble(0);
     }
 
     public Double buscarValorTransacoesCredito(){
-        Double saldo = new Double(0);
         database = dbHelper.getReadableDatabase();
 
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT SUM(valor) as total FROM transacao WHERE debito = " + ConstantesUtil.CREDITO);
-        Cursor cursor = database.rawQuery(sql.toString(), null);
+        Cursor cursor = database.rawQuery(DBQueries.BUSCAR_VALOR_TRANSACOES_CREDITO_QUERY, new String[] {String.valueOf(ConstantesUtil.CREDITO)});
 
         cursor.moveToFirst();
 
-        saldo = cursor.getDouble(0);
-
-        return saldo;
+        return cursor.getDouble(0);
     }
 
     public List<TransacaoVO> buscarTransacoesDebito(){
         List<TransacaoVO> transacoesDebito = new ArrayList<TransacaoVO>();
         database = dbHelper.getReadableDatabase();
 
-        Cursor cursor = database.rawQuery(DBQueries.BUSCAR_TRANSACOES_DEBITO_AGRUPADAS_POR_TIPO_CUSTO, new String[] {String.valueOf(ConstantesUtil.DEBITO)});
+        Cursor cursor = database.rawQuery(DBQueries.BUSCAR_TRANSACOES_DEBITO_AGRUPADAS_POR_TIPO_CUSTO_QUERY, new String[] {String.valueOf(ConstantesUtil.DEBITO)});
 
         while (cursor.moveToNext()) {
             TransacaoVO transacao = new TransacaoVO();
@@ -120,7 +57,6 @@ public class TransacaoDAO {
 
             transacoesDebito.add(transacao);
         }
-
 
         return transacoesDebito;
     }
@@ -132,7 +68,7 @@ public class TransacaoDAO {
 
         String[] cols = new String[]{"t.descricao", "t.valor", "t.natureza_operacao", "c.descricao"};
 
-        Cursor cursor = database.rawQuery(DBQueries.BUSCAR_HISTORICO_TRANSACAO_POR_CONTA_QUERY + contaId, null);
+        Cursor cursor = database.rawQuery(DBQueries.BUSCAR_HISTORICO_TRANSACAO_POR_CONTA_QUERY, new String[] {String.valueOf(contaId)});
 
 
         while (cursor.moveToNext()) {
@@ -155,4 +91,58 @@ public class TransacaoDAO {
 
         return transacoesDB;
     }
+
+    public Double buscarSaldoContaPorId(Integer id){
+        try{
+            database = dbHelper.getReadableDatabase();
+
+            Cursor cursor = database.rawQuery(DBQueries.BUSCAR_SALDO_CONTA_POR_ID_QUERY, new String[] {String.valueOf(id)});
+
+            cursor.moveToFirst();
+
+            return cursor.getDouble(0);
+        }catch(Exception e){
+            Log.i("ERROR", e.getMessage());
+        }
+
+        return null;
+    }
+
+    public Boolean salvarTransacao(Transacao transacao) {
+        try{
+            database = dbHelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+
+            values.put("descricao", transacao.getDescricao());
+            values.put("valor", transacao.getValor());
+            values.put("conta", transacao.getConta().getId());
+            values.put("centro_custo", transacao.getCentro_custo().getId());
+            values.put("debito", transacao.getNatureza_operacao());
+
+            database.insert(DBQueries.TABELA_TRANSACAO, null, values);
+
+            Double saldo = buscarSaldoContaPorId(transacao.getConta().getId());
+
+            //Subtrai ou adiciona do saldo atual da conta, baseando-se na natureza da operação (crédito ou débito)
+            if(transacao.getNatureza_operacao() == ConstantesUtil.DEBITO){
+                saldo = saldo - transacao.getValor();
+            }else{
+                saldo = saldo + transacao.getValor();
+            }
+
+            //Atualizar saldo da conta
+            ContentValues valor = new ContentValues();
+            valor.put("saldo", saldo);
+            database.update(DBQueries.TABELA_CONTA, valor, "id="+transacao.getConta().getId(), null);
+
+            database.close();
+        }catch(Exception e){
+            Log.i("ERROR", e.getMessage());
+            return Boolean.FALSE;
+        }
+
+        return Boolean.TRUE;
+    }
+
 }

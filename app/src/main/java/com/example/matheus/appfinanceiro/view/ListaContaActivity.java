@@ -59,8 +59,8 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
         //Buscar total de entrada e saída
         entradaTextView = findViewById(R.id.entradaTextView);
         saidaTextView = findViewById(R.id.saidaTextView);
-        entradaTextView.setText(String.valueOf(transacaoDAO.buscarValorTransacoesCredito()));
-        saidaTextView.setText(String.valueOf(transacaoDAO.buscarValorTransacoesDebito()));
+        entradaTextView.setText("R$ ".concat(String.valueOf(transacaoDAO.buscarValorTransacoesCredito())));
+        saidaTextView.setText("R$ ".concat(String.valueOf(transacaoDAO.buscarValorTransacoesDebito())));
 
 
         listaContaView.setAdapter(contaAdapter);
@@ -115,7 +115,6 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
             case NOVA_CONTA_REQUEST_CODE:
                 if(resultCode == RESULT_OK) {
 
-                    //VER SE ISSO AQUI VAI FICAR ASSIM MESMO
                     this.listaConta.removeAll(listaConta);
                     this.listaConta.addAll(contaDAO.buscarContas());
 
@@ -129,7 +128,7 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
                 }
 
                 if(resultCode == ConstantesUtil.RESULT_ERROR){
-                    Toast.makeText(this, R.string.msg_cancelamento, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.msg_erro, Toast.LENGTH_LONG).show();
                 }
             break;
         }
@@ -143,7 +142,5 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
         detalhesContaIntent.putExtra(ConstantesUtil.CONTA_DETALHE, conta.getId());
 
         startActivity(detalhesContaIntent);
-
-
     }
 }
