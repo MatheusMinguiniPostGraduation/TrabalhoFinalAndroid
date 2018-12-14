@@ -15,6 +15,7 @@ import com.example.matheus.appfinanceiro.dao.ContaDAO;
 import com.example.matheus.appfinanceiro.dao.TransacaoDAO;
 import com.example.matheus.appfinanceiro.model.Conta;
 import com.example.matheus.appfinanceiro.util.ConstantesUtil;
+import com.example.matheus.appfinanceiro.util.FormatNumberUtil;
 
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class DetalheContaActivity extends AppCompatActivity {
         saldoView = findViewById(R.id.saldo_conta_detalhe);
         descricaoView = findViewById(R.id.descricao_conta_detalhe);
 
-        saldoView.setText("R$ " + contaDAO.buscarSaldoContaPorId(contaId));
+        saldoView.setText("R$".concat(FormatNumberUtil.formatDecimal(contaDAO.buscarSaldoContaPorId(contaId))));
         descricaoView.setText(contaDetalhe.getDescricao());
 
         getSupportActionBar().setSubtitle("Detalhes da conta bancária");
@@ -75,7 +76,6 @@ public class DetalheContaActivity extends AppCompatActivity {
             case NOVA_TRANSACAO_REQUEST_CODE:
                 if(resultCode == RESULT_OK) {
 
-                    //VER SE ISSO AQUI VAI FICAR ASSIM MESMO
                     this.historicoTransacao.removeAll(historicoTransacao);
                     this.historicoTransacao.addAll(new TransacaoDAO(this).buscarHistoricoTransacoesPorConta(contaId));
 
@@ -89,7 +89,7 @@ public class DetalheContaActivity extends AppCompatActivity {
                 }
 
                 if(resultCode == ConstantesUtil.RESULT_ERROR){
-                    Toast.makeText(this, R.string.msg_cancelamento, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.msg_erro, Toast.LENGTH_LONG).show();
                 }
                 break;
         }

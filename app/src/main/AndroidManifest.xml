@@ -21,9 +21,8 @@
         <activity android:name=".view.NovaContaActivity"></activity>
         <activity android:name=".view.DetalheContaActivity"></activity>
         <activity android:name=".view.NovaTransacaoActivity"></activity>
+        <activity android:name=".view.PieChartActivity"></activity>
 
 
     </application>
-
-
 </manifest>

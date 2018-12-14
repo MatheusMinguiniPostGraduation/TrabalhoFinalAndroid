@@ -18,6 +18,7 @@ import com.example.matheus.appfinanceiro.dao.ContaDAO;
 import com.example.matheus.appfinanceiro.dao.TransacaoDAO;
 import com.example.matheus.appfinanceiro.model.Conta;
 import com.example.matheus.appfinanceiro.util.ConstantesUtil;
+import com.example.matheus.appfinanceiro.util.FormatNumberUtil;
 
 import java.util.List;
 
@@ -53,14 +54,14 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
 
         saldoContasView = findViewById(R.id.totalSaldoContasView);
 
-        saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas())));
+        saldoContasView.setText("R$".concat(FormatNumberUtil.formatDecimal(contaDAO.buscarSaldoContas())));
         contaAdapter = new ContaAdapter(this, listaConta);
 
         //Buscar total de entrada e saída
         entradaTextView = findViewById(R.id.entradaTextView);
         saidaTextView = findViewById(R.id.saidaTextView);
-        entradaTextView.setText(String.valueOf(transacaoDAO.buscarValorTransacoesCredito()));
-        saidaTextView.setText(String.valueOf(transacaoDAO.buscarValorTransacoesDebito()));
+        entradaTextView.setText("R$ ".concat(String.valueOf(transacaoDAO.buscarValorTransacoesCredito())));
+        saidaTextView.setText("R$ ".concat(String.valueOf(transacaoDAO.buscarValorTransacoesDebito())));
 
 
         listaContaView.setAdapter(contaAdapter);
@@ -69,12 +70,11 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
 
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onRestart() { super.onRestart();
 
         //Atualiza os saldos nas contas
         listaConta = contaDAO.buscarContas();
-        saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas())));
+        saldoContasView.setText("R$ ".concat(FormatNumberUtil.formatDecimal(contaDAO.buscarSaldoContas())));
         contaAdapter = new ContaAdapter(this, listaConta);
         listaContaView.setAdapter(contaAdapter);
 
@@ -95,9 +95,17 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
 
-        intent = new Intent(getApplicationContext(), NovaContaActivity.class);
+        if(item.getItemId() == R.id.novaContaMenuItem){
+            intent = new Intent(getApplicationContext(), NovaContaActivity.class);
+            startActivityForResult(intent, NOVA_CONTA_REQUEST_CODE);
+        }
 
-        startActivityForResult(intent, NOVA_CONTA_REQUEST_CODE);
+        if(item.getItemId() == R.id.graficoGastos){
+            intent = new Intent(getApplicationContext(), PieChartActivity.class);
+            startActivity(intent);
+        }
+
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -108,7 +116,6 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
             case NOVA_CONTA_REQUEST_CODE:
                 if(resultCode == RESULT_OK) {
 
-                    //VER SE ISSO AQUI VAI FICAR ASSIM MESMO
                     this.listaConta.removeAll(listaConta);
                     this.listaConta.addAll(contaDAO.buscarContas());
 
@@ -122,7 +129,7 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
                 }
 
                 if(resultCode == ConstantesUtil.RESULT_ERROR){
-                    Toast.makeText(this, R.string.msg_cancelamento, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.msg_erro, Toast.LENGTH_LONG).show();
                 }
             break;
         }
@@ -136,7 +143,5 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
         detalhesContaIntent.putExtra(ConstantesUtil.CONTA_DETALHE, conta.getId());
 
         startActivity(detalhesContaIntent);
-
-
     }
 }

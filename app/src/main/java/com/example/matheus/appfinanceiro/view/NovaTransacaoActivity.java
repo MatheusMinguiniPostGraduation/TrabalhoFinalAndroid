@@ -85,7 +85,6 @@ public class NovaTransacaoActivity extends AppCompatActivity {
         transacaoNova.setDescricao(descricaoView.getText().toString());
         transacaoNova.setValor(Double.valueOf(valorView.getText().toString()));
         transacaoNova.setConta(new Conta((Integer) getIntent().getSerializableExtra(ConstantesUtil.CONTA_ID)));
-        //transacaoNova.setCentro_custo();
 
         Integer indexItemClicado = spinnerCentroCusto.getSelectedItemPosition();
         transacaoNova.setCentro_custo(centroCustoList.get(indexItemClicado));

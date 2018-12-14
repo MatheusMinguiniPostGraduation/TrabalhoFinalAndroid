@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.matheus.appfinanceiro.helper.SQLiteHelper;
 import com.example.matheus.appfinanceiro.model.CentroCusto;
 import com.example.matheus.appfinanceiro.model.Conta;
+import com.example.matheus.appfinanceiro.util.DBQueries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class CentroCustoDAO {
 
 
             String[] cols = new String[]{"id", "descricao"};
-            Cursor cursor = database.query("centro_custo",
+            Cursor cursor = database.query(DBQueries.TABELA_CENTRO_CUSTO,
                     cols,
                     null, null, null, null, "descricao");
 
@@ -52,37 +53,41 @@ public class CentroCustoDAO {
                 listaCentroCustoDB.add(centroCusto);
             }
         } catch (Exception e) {
-            Log.i("info", e.getMessage());
+            Log.i("ERROR", e.getMessage());
         }
 
         return listaCentroCustoDB;
     }
 
     private void popularTabela(){
-        database = dbHelper.getWritableDatabase();
+        try {
+            database = dbHelper.getWritableDatabase();
 
-        List<ContentValues> listaContentValues = new ArrayList<ContentValues>();
+            List<ContentValues> listaContentValues = new ArrayList<ContentValues>();
 
-        List<String> descricaoCentroCusto = new ArrayList<>();
-        descricaoCentroCusto.add("Combustível");
-        descricaoCentroCusto.add("Lazer");
-        descricaoCentroCusto.add("Educação");
-        descricaoCentroCusto.add("Alimentação");
-        descricaoCentroCusto.add("Transporte");
-        descricaoCentroCusto.add("Saúde");
-        descricaoCentroCusto.add("Tarifas bancárias");
-        descricaoCentroCusto.add("Corporativo");
-        descricaoCentroCusto.add("Moradia");
+            List<String> descricaoCentroCusto = new ArrayList<>();
+            descricaoCentroCusto.add("Combustível");
+            descricaoCentroCusto.add("Lazer");
+            descricaoCentroCusto.add("Educação");
+            descricaoCentroCusto.add("Alimentação");
+            descricaoCentroCusto.add("Transporte");
+            descricaoCentroCusto.add("Saúde");
+            descricaoCentroCusto.add("Tarifas bancárias");
+            descricaoCentroCusto.add("Corporativo");
+            descricaoCentroCusto.add("Moradia");
 
 
-        for(int i = 0; i < descricaoCentroCusto.size(); i++){
-            ContentValues values = new ContentValues();
-            values.put("descricao", descricaoCentroCusto.get(i));
-            listaContentValues.add(values);
-        }
+            for(int i = 0; i < descricaoCentroCusto.size(); i++){
+                ContentValues values = new ContentValues();
+                values.put("descricao", descricaoCentroCusto.get(i));
+                listaContentValues.add(values);
+            }
 
-        for(ContentValues values : listaContentValues){
-            database.insert("centro_custo", null, values);
+            for(ContentValues values : listaContentValues){
+                database.insert(DBQueries.TABELA_CENTRO_CUSTO, null, values);
+            }
+        }catch(Exception e){
+            Log.i("ERROR", e.getMessage());
         }
     }
 }
