@@ -2,6 +2,7 @@ package com.example.matheus.appfinanceiro.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,10 +34,11 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
 
     private List<Conta> listaConta;
 
-    ContaAdapter contaAdapter;
+    private ContaAdapter contaAdapter;
 
-    ContaDAO contaDAO;
-    TransacaoDAO transacaoDAO;
+    private ContaDAO contaDAO;
+    private TransacaoDAO transacaoDAO;
+    private ConstraintLayout mensagem_vazio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +50,22 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
 
         listaConta = contaDAO.buscarContas();
 
-
+        //Lista na tela
         listaContaView = findViewById(R.id.lista_conta_view);
+        mensagem_vazio = findViewById(R.id.mensagem_vazio_layout);
+
+        if(listaConta.isEmpty()){
+            mostrarMensagemVazio();
+        }else{
+            mostrarListaContas();
+        }
+    }
+
+    private void mostrarListaContas() {
+
+        listaContaView.setVisibility(View.VISIBLE);
+        mensagem_vazio.setVisibility(View.GONE);
+
         listaContaView.setOnItemClickListener(this);
 
         saldoContasView = findViewById(R.id.totalSaldoContasView);
@@ -69,18 +85,21 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
 
 
 
+    public void mostrarMensagemVazio(){
+        mensagem_vazio.setVisibility(View.VISIBLE);
+        listaContaView.setVisibility(View.GONE);
+    }
+
+
+
     @Override
     protected void onRestart() { super.onRestart();
-
-        //Atualiza os saldos nas contas
-        listaConta = contaDAO.buscarContas();
-        saldoContasView.setText("R$ ".concat(FormatNumberUtil.formatDecimal(contaDAO.buscarSaldoContas())));
-        contaAdapter = new ContaAdapter(this, listaConta);
-        listaContaView.setAdapter(contaAdapter);
-
-        //atualiza o valor das transacoes
-        entradaTextView.setText(String.valueOf(transacaoDAO.buscarValorTransacoesCredito()));
-        saidaTextView.setText(String.valueOf(transacaoDAO.buscarValorTransacoesDebito()));
+        if(listaConta.isEmpty()){
+            mostrarMensagemVazio();
+        }else{
+            mostrarListaContas();
+            this.contaAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -110,6 +129,11 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
         return super.onOptionsItemSelected(item);
     }
 
+    public void novaConta(View view){
+        Intent intent = new Intent(getApplicationContext(), NovaContaActivity.class);
+        startActivityForResult(intent, NOVA_CONTA_REQUEST_CODE);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
@@ -119,8 +143,13 @@ public class ListaContaActivity extends AppCompatActivity implements  AdapterVie
                     this.listaConta.removeAll(listaConta);
                     this.listaConta.addAll(contaDAO.buscarContas());
 
-                    saldoContasView.setText("R$ ".concat(String.valueOf(contaDAO.buscarSaldoContas()))); //Atualiza o saldo na tela
-                    this.contaAdapter.notifyDataSetChanged();
+                    if(listaConta.isEmpty()){
+                        mostrarMensagemVazio();
+                    }else{
+                        mostrarListaContas();
+                        this.contaAdapter.notifyDataSetChanged();
+                    }
+
                     Toast.makeText(this, R.string.msg_sucesso, Toast.LENGTH_LONG).show();
                 }
 
